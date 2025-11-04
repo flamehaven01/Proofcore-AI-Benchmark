@@ -18,7 +18,7 @@ class Settings(BaseSettings):
 
     # [=] Application Settings
     APP_NAME: str = "ProofCore API"
-    APP_VERSION: str = "3.7.2"
+    APP_VERSION: str = "1.0.2"
     API_V1_PREFIX: str = "/api/v1"
     DEBUG: bool = False
 
@@ -47,7 +47,17 @@ class Settings(BaseSettings):
             return [origin.strip() for origin in v.split(",")]
         return v
 
-    # [=] LLM API Settings (for future real LLM integration)
+    # [=] Offline / LLM Settings
+    OFFLINE_MODE: bool = Field(
+        default=True,
+        description="When True, skip remote dependencies and use offline heuristics"
+    )
+    ENABLE_LLM_PROVIDERS: bool = Field(
+        default=False,
+        description="Set True to allow initializing remote LLM providers"
+    )
+
+    # [=] LLM API Settings (optional when ENABLE_LLM_PROVIDERS=True)
     OPENAI_API_KEY: Optional[str] = None
     ANTHROPIC_API_KEY: Optional[str] = None
     GOOGLE_API_KEY: Optional[str] = None

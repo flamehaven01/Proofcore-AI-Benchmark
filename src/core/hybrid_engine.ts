@@ -7,6 +7,7 @@ import { SymbolicVerifier, type SymbolicVerificationResult } from './symbolic_ve
 import { SemanticEvaluator, type SemanticEvaluationResult } from './semantic_evaluator';
 import { LIIEngine } from '../metrics/lii_engine';
 import type { ConsensusResult } from '../ai/consensus_manager';
+import { safeFetch, isOfflineMode as networkOfflineMode } from '../net/safeFetch';
 
 export interface ProofStep {
   id: string | number;
@@ -44,11 +45,16 @@ export interface VerificationConfig {
   pass_threshold: number;   // 0-100
 }
 
-// DEPRECATED: These hardcoded values should never be used.
-// Use HybridEngine.loadConfig() to fetch from backend instead.
-const DEPRECATED_SYMBOLIC_WEIGHT = 0.7;
-const DEPRECATED_SEMANTIC_WEIGHT = 0.3;
-const DEPRECATED_PASS_THRESHOLD = 70;
+const DEFAULT_OFFLINE_CONFIG: VerificationConfig = {
+  symbolic_weight: 0.7,
+  semantic_weight: 0.3,
+  pass_threshold: 70
+};
+
+const OFFLINE_ENV_FLAG =
+  typeof import.meta !== 'undefined' &&
+  typeof import.meta.env !== 'undefined' &&
+  import.meta.env.VITE_OFFLINE_MODE !== 'false';
 
 export class HybridEngine {
   private symbolic: SymbolicVerifier;
@@ -75,8 +81,19 @@ export class HybridEngine {
    * @throws Error if backend config API is unreachable
    */
   async loadConfig(): Promise<void> {
+    if (this.config) {
+      return;
+    }
+
+    const offlineMode = OFFLINE_ENV_FLAG || networkOfflineMode();
+    if (offlineMode) {
+      this.config = DEFAULT_OFFLINE_CONFIG;
+      console.info('[#] Offline mode active - using bundled verification config');
+      return;
+    }
+
     try {
-      const response = await fetch('/api/v1/config/verification');
+      const response = await safeFetch('/api/v1/config/verification', { method: 'GET' });
       if (!response.ok) {
         throw new Error(`Failed to fetch config: ${response.statusText}`);
       }
@@ -84,13 +101,8 @@ export class HybridEngine {
       console.log('[+] Verification config loaded from backend:', this.config);
     } catch (error) {
       console.error('[-] Failed to load config from backend:', error);
-      // Fallback to defaults (should only happen if backend is down)
-      this.config = {
-        symbolic_weight: DEPRECATED_SYMBOLIC_WEIGHT,
-        semantic_weight: DEPRECATED_SEMANTIC_WEIGHT,
-        pass_threshold: DEPRECATED_PASS_THRESHOLD,
-      };
-      console.warn('[W] Using deprecated hardcoded config - backend may be down');
+      this.config = DEFAULT_OFFLINE_CONFIG;
+      console.warn('[W] Falling back to offline verification config - drift checks recommended');
     }
   }
 

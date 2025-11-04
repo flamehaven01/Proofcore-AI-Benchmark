@@ -92,6 +92,19 @@ npm run dev
 # Open http://localhost:5173
 ```
 
+### Offline Mode (Default)
+
+- ProofCore ships with `VITE_OFFLINE_MODE=true`, so verification works entirely in-browser without starting the FastAPI backend.
+- Run `npm run verify:offline-assets` to confirm Pyodide bundles exist in `public/pyodide` before going air-gapped.
+- Remote LLM providers stay disabled unless you set `ENABLE_LLM_PROVIDERS=true` (backend) and provide API keys. Leave them unset for the OSS/offline profile.
+- If you do enable networking, also set `VITE_ALLOW_NETWORK=true` (frontend) so guarded fetches can reach the backend.
+
+#### Vendoring Pyodide for Offline Use
+
+1. Grab the latest Pyodide release tarball from https://github.com/pyodide/pyodide/releases (once, while online).
+2. Extract the `pyodide` directory into `public/pyodide/` (keep `pyodide.js`, `packages.json`, 그리고 릴리스 버전에 따라 `pyodide_py.tar` 또는 `python_stdlib.zip`).
+3. Run `npm run verify:offline-assets` to double-check the files are in place.
+
 ### Run Tests
 
 ```bash
@@ -161,6 +174,12 @@ npm run preview
 - Complete offline operation validated
 - Network-blocked CI/CD workflow
 - Privacy-first architecture
+
+#### [+] Maintenance Update (2025-11-04)
+- Offline mode defaults tightened across frontend/backends with `VITE_OFFLINE_MODE`, `VITE_ALLOW_NETWORK`, and `ENABLE_LLM_PROVIDERS` toggles.
+- `safeFetch` enforced for all network calls, and offline Vitest suite now exercises the real guardrails.
+- Added `pyodide` dependency plus `npm run verify:offline-assets` to ensure WASM bundles are vendored before air-gapped deployments.
+- Dependency refresh (Vite 5.4.x, esbuild 0.25.x, MSW stack) resolves prior advisories; remaining warnings tracked for a future major upgrade.
 
 #### [+] Live Demo for Hugging Face Spaces
 - Interactive Gradio application

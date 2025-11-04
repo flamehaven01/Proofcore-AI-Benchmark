@@ -10,7 +10,26 @@
  */
 
 const OFFLINE_MODE = true as const;
-const ALLOW_NETWORK_ENV = process.env.ALLOW_NETWORK === 'true';
+
+function resolveAllowNetworkFlag(): boolean {
+  if (typeof import.meta !== 'undefined' && typeof import.meta.env !== 'undefined') {
+    const envValue = import.meta.env.VITE_ALLOW_NETWORK ?? import.meta.env.VITE_ENABLE_NETWORK;
+    if (typeof envValue === 'string') {
+      return envValue.toLowerCase() === 'true';
+    }
+  }
+
+  if (typeof process !== 'undefined' && typeof process.env !== 'undefined') {
+    const envValue = process.env.ALLOW_NETWORK ?? process.env.VITE_ALLOW_NETWORK;
+    if (typeof envValue === 'string') {
+      return envValue.toLowerCase() === 'true';
+    }
+  }
+
+  return false;
+}
+
+const ALLOW_NETWORK_ENV = resolveAllowNetworkFlag();
 
 export interface SafeFetchOptions extends RequestInit {
   allowOffline?: boolean; // Allow this specific call to work offline

@@ -79,6 +79,12 @@ class LLMAdapter:
         2. API key is configured
         """
         self.services: Dict[str, any] = {}
+        self.offline_mode = settings.OFFLINE_MODE or not settings.ENABLE_LLM_PROVIDERS
+
+        if self.offline_mode:
+            print("[#] Offline mode active - skipping remote LLM provider initialization")
+            self.fallback_order = []
+            return
 
         # Initialize OpenAI if available
         if OpenAIProvider and settings.OPENAI_API_KEY:
@@ -104,7 +110,7 @@ class LLMAdapter:
             except Exception as e:
                 print(f"[W] Failed to initialize Google AI: {e}")
 
-        if not self.services:
+        if not self.services and not self.offline_mode:
             print("[W] No LLM providers available. Set API keys in .env file.")
 
         # Fallback order (prefer OpenAI, then Anthropic, then Google)
@@ -128,6 +134,8 @@ class LLMAdapter:
         Raises:
             ConnectionError: If all providers fail
         """
+        if self.offline_mode:
+            raise ConnectionError("Offline mode is enabled; remote LLM evaluation is disabled")
         if not self.services:
             raise ConnectionError("No LLM providers available")
 
@@ -176,6 +184,8 @@ class LLMAdapter:
         Raises:
             ConnectionError: If all providers fail
         """
+        if self.offline_mode:
+            raise ConnectionError("Offline mode is enabled; remote LLM evaluation is disabled")
         if not self.services:
             raise ConnectionError("No LLM providers available")
 
@@ -248,7 +258,13 @@ class LLMAdapter:
 
     def has_providers(self) -> bool:
         """Check if any providers are available"""
+        if self.offline_mode:
+            return False
         return len(self.services) > 0
+
+    def is_offline_mode(self) -> bool:
+        """Return True when remote providers are intentionally disabled"""
+        return self.offline_mode
 
 
 # [T] Global singleton instance (optional)

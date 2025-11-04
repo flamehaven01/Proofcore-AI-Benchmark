@@ -86,6 +86,10 @@ tmp/
 *.tar.gz
 *.zip
 
+# Pyodide offline assets (local vendoring only)
+public/pyodide/*
+!public/pyodide/README.md
+
 # Backend specific
 backend/.env
 backend/*.db

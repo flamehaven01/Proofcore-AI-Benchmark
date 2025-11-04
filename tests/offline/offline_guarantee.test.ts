@@ -8,6 +8,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { safeFetch, isOfflineMode } from '../../src/net/safeFetch';
 
 interface OfflineScenario {
   name: string;
@@ -423,5 +424,12 @@ describe('[#] Offline Guarantee - 100% Network-Free Verification', () => {
     summary.guarantees.forEach(g => console.log(`      [+] ${g}`));
 
     expect(summary.passed).toBe(summary.tested);
+  });
+
+  describe('Network Guard', () => {
+    it('should block fetch calls when offline mode is active', async () => {
+      expect(isOfflineMode()).toBe(true);
+      await expect(safeFetch('https://example.com')).rejects.toThrow(/Network disabled/);
+    });
   });
 });

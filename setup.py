@@ -13,7 +13,7 @@ def read_file(filename):
 
 setup(
     name='proofbench',
-    version='3.7.2',
+    version='1.0.2',
     description='Next-Generation Mathematical Reasoning & Proof Verification System',
     long_description=read_file('README.md') if os.path.exists('README.md') else '',
     long_description_content_type='text/markdown',

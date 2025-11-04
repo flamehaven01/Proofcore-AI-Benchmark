@@ -13,6 +13,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **ProofCore v1.0.2** delivers production-ready optimization across performance, design system, testing, and offline guarantees with comprehensive live demo for Hugging Face Spaces.
 
+#### Maintenance (2025-11-04)
+
+- **Offline Mode Hardening**
+  - Frontend now defaults to `VITE_OFFLINE_MODE=true` with guarded fallback to bundled verification weights.
+  - All API clients route through `safeFetch`, enforcing the offline firewall unless `VITE_ALLOW_NETWORK=true`.
+  - Backend gains explicit `OFFLINE_MODE` / `ENABLE_LLM_PROVIDERS` toggles; LLM adapters short-circuit when operating offline.
+  - Offline tests exercise the real network guard instead of relying on mocks.
+- **Pyodide Bundling**
+  - Added `pyodide` dependency declaration and `npm run verify:offline-assets` script to validate vendored WASM assets.
+  - Documented manual vendoring steps plus placeholder `public/pyodide/README.md`.
+- **Security & Dependency Hygiene**
+  - Updated Vite 5.4.x, esbuild 0.25.x, MSW stack (`@mswjs/data` 0.16.x, `msw` 2.4.x) to remove known advisories.
+  - Remaining advisories require Vite/Vitest major upgrades and are tracked for a future release.
+- **Documentation & Versioning**
+  - `.env.example`, backend configuration, README, and packaging metadata now consistently reflect v1.0.2.
+  - CHANGELOG and release notes point to the offline-first maintenance scope.
+
 #### Added
 
 ##### Core Features

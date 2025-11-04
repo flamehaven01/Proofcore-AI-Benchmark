@@ -5,6 +5,7 @@ import type {
   ProofRunDetail,
   SettingsData,
 } from "./types";
+import { safeFetch } from "../net/safeFetch";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ?? "/api/v1";
@@ -17,10 +18,19 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
     headers.set("Authorization", `Bearer ${API_KEY}`);
   }
 
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...init,
-    headers,
-  });
+  let response: Response;
+  try {
+    response = await safeFetch(`${API_BASE_URL}${path}`, {
+      ...init,
+      headers,
+    });
+  } catch (error) {
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : `Network disabled: unable to reach ${API_BASE_URL}${path}`
+    );
+  }
 
   if (!response.ok) {
     const payload = await safeJson(response);
