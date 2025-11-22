@@ -67,14 +67,14 @@ jobs:
         if: always()
 
       - name: Upload performance report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: performance-reports
           path: performance-reports/
         if: always()
 
       - name: Upload junit results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: test-results
           path: junit.xml
