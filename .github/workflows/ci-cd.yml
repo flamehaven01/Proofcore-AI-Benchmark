@@ -127,7 +127,7 @@ jobs:
           STORYBOOK_DISABLE_TELEMETRY: 1
 
       - name: Upload Storybook artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: storybook-static
           path: storybook-static/
@@ -163,7 +163,7 @@ jobs:
           VITE_API_DEBUG: false
 
       - name: Upload production build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: production-build
           path: dist/

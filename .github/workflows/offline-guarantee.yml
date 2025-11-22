@@ -102,7 +102,7 @@ jobs:
           cat offline-reports/offline_guarantee_report.md
 
       - name: Upload offline report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: offline-guarantee-report
           path: offline-reports/
@@ -149,7 +149,7 @@ jobs:
           fi
 
       - name: Upload fallback results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: fallback-test-results
           path: fallback-test-results.txt
