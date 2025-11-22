@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "proofcore"
-version = "1.0.2"
+version = "1.0.3"
 description = "ProofCore - Hybrid Mathematical Proof Verification Engine"
 readme = "README.md"
 requires-python = ">=3.10"

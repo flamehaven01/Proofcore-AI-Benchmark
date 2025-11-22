@@ -26,6 +26,12 @@ This maintenance refresh for ProofCore v1.0.2 reinforces the offline-first contr
 - Added `pyodide` dependency declaration plus `npm run verify:offline-assets` to confirm required WASM artifacts (`pyodide.js`, `packages.json`, 그리고 `pyodide_py.tar` 또는 `python_stdlib.zip`) are vendored under `public/pyodide/`.
 - `public/pyodide/README.md` documents the manual download workflow for air-gapped deployments.
 
+### Research Benchmark Module (RBM)
+
+- Introduced `proofcore/research_benchmark` skeleton with loader/parser, cascade validator, and metrics helpers.
+- Added `rbm_cli` for report generation plus `data_examples/sample_set.json` for quick smoke tests.
+- Python regression tests (`backend/tests_rbm`) cover hooks, metrics, and CLI execution.
+
 ### Dependency Refresh
 
 - Upgraded to `vite@5.4.x`, `esbuild@0.25.x`, `@mswjs/data@0.16.x`, and `msw@2.4.x`, clearing previously reported low/moderate CVEs in the stack.

@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.3] - 2025-11-06
+
+### Added
+- Introduced the Research Benchmark Module (RBM) foundation: loader/parser, cascade validator, metrics helpers, and CLI reporting (`rbm_cli`) with a sample dataset.
+- Added Python smoke tests under `backend/tests_rbm/` covering CA proof hooks, cascade evaluation, metrics, and CLI execution.
+- Replaced vendored Pyodide assets with a manifest-driven fetch/verify pipeline (`npm run setup:pyodide`, `npm run verify:offline-assets`).
+
+### In Progress
+- Extend the manifest workflow with Subresource Integrity hashes and automated dependency scanning (npm audit / pip-audit / OSV).
+- Implement Service Worker caching and true lazy loading so Pyodide assets download only when offline features are invoked.
+
+---
+
 ## [1.0.2] - 2025-10-24
 
 ### [*] Complete Optimization & Offline-First Certification Release
@@ -29,6 +42,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Documentation & Versioning**
   - `.env.example`, backend configuration, README, and packaging metadata now consistently reflect v1.0.2.
   - CHANGELOG and release notes point to the offline-first maintenance scope.
+- **Research Benchmark Module (RBM)**
+  - Introduced `proofcore/research_benchmark` with computer-assisted proof hooks, cascade validator, and metrics helpers.
+  - Added `rbm_cli` reporting utility and sample dataset `data_examples/sample_set.json` for smoke tests.
+  - Python smoke tests under `backend/tests_rbm` cover hooks, metrics, and CLI integration.
 
 #### Added
 

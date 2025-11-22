@@ -1,6 +1,6 @@
 {
   "name": "@proofcore/engine",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "ProofCore - Hybrid Mathematical Proof Verification Engine",
   "type": "module",
   "scripts": {
@@ -20,6 +20,7 @@
     "api:generate:local": "openapi-typescript backend/openapi.json -o src/api/schema.d.ts && echo 'OpenAPI types generated from local schema'",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "setup:pyodide": "node scripts/fetch-pyodide-assets.mjs",
     "verify:offline-assets": "node scripts/verify-offline-assets.mjs"
   },
   "dependencies": {

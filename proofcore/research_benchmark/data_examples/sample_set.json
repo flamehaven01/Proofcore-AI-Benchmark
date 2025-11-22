@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "name": "Sample RBM Set",
+    "description": "Minimal example dataset for Research Benchmark Module"
+  },
+  "samples": [
+    {
+      "id": "sample-1",
+      "steps": [
+        {"text": "x^2 + 2*x + 1", "expected": true},
+        {"text": "1 / 0", "expected": false},
+        {"text": "WLOG, assume x > 0", "expected": false}
+      ]
+    }
+  ]
+}

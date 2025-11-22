@@ -1,10 +1,11 @@
-# ProofCore Pyodide Assets
+# Pyodide Assets (Generated)
 
-Place the extracted contents of a Pyodide release in this directory to run ProofCore entirely offline.
+This directory is populated at build or deployment time by running:
 
-Required files:
-- `pyodide.js`
-- `pyodide_py.tar`
-- `packages.json`
+```bash
+npm run setup:pyodide
+```
 
-Download from https://github.com/pyodide/pyodide/releases and run `npm run verify:offline-assets` to confirm the assets exist.
+The command reads `pyodide-manifest.json`, downloads the listed files,
+and verifies their hashes before writing them here. The directory is
+kept empty in git to prevent vendoring large binary artifacts.

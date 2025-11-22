@@ -95,15 +95,23 @@ npm run dev
 ### Offline Mode (Default)
 
 - ProofCore ships with `VITE_OFFLINE_MODE=true`, so verification works entirely in-browser without starting the FastAPI backend.
-- Run `npm run verify:offline-assets` to confirm Pyodide bundles exist in `public/pyodide` before going air-gapped.
+- Run `npm run setup:pyodide` when you need offline Pyodide support; it downloads assets declared in `pyodide-manifest.json`.
+- Run `npm run verify:offline-assets` to confirm the downloaded files match the manifest before going air-gapped.
 - Remote LLM providers stay disabled unless you set `ENABLE_LLM_PROVIDERS=true` (backend) and provide API keys. Leave them unset for the OSS/offline profile.
 - If you do enable networking, also set `VITE_ALLOW_NETWORK=true` (frontend) so guarded fetches can reach the backend.
 
 #### Vendoring Pyodide for Offline Use
 
-1. Grab the latest Pyodide release tarball from https://github.com/pyodide/pyodide/releases (once, while online).
-2. Extract the `pyodide` directory into `public/pyodide/` (keep `pyodide.js`, `packages.json`, 그리고 릴리스 버전에 따라 `pyodide_py.tar` 또는 `python_stdlib.zip`).
-3. Run `npm run verify:offline-assets` to double-check the files are in place.
+1. Review `pyodide-manifest.json` and list the assets you plan to ship (include hashes or SRI strings when possible).
+2. Run `npm run setup:pyodide` to download the files locally under `public/pyodide/`.
+3. Run `npm run verify:offline-assets` to confirm the downloaded files match the manifest.
+
+### Research Benchmark Module (RBM)
+
+- `proofcore/research_benchmark/` hosts ProofCore's step-level benchmarking utilities (loader, parser, cascade validator, and metrics).
+- Evaluate a dataset via `python -m proofcore.research_benchmark.rbm_cli --dataset proofcore/research_benchmark/data_examples/sample_set.json`.
+- Hooks and metrics mirror the CA proof pipeline and will expand to cover IMO-Bench style evaluations (AnswerBench / ProofBench / GradingBench).
+- Python smoke tests under `backend/tests_rbm/` keep the RBM stack regression-safe.
 
 ### Run Tests
 
